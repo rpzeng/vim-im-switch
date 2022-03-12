@@ -6,3 +6,9 @@ vim 的中文输入法切换
 
 * linux
     用fxitx5
+
+Option:
+
+```vim
+let g:is_git_bash = 1  "  在git-bash 中使用
+```
