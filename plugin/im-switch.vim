@@ -5,7 +5,7 @@ let g:loaded_im_switch_vim_aa = 1
 
 
 if !exists("g:is_windows")
-    if(has("win32") || has("win64") || has("win95") || has("win16") || has("windows"))
+    if(has("win32") || has("win64") || has("win95") || has("win16"))
         let g:is_windows = 1
     else
         let g:is_windows = 0
