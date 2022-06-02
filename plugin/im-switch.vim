@@ -14,28 +14,33 @@ if !exists("g:im_switch_command")
     elseif executable(expand('<sfile>:p:h:h') . '/tools/im-select.exe')
         let g:im_switch_command = expand('<sfile>:p:h:h') . '/tools/im-select.exe'
     else
-        echoms "需要指定参数 g:im_switch_command "
+        echomsg "需要指定参数 g:im_switch_command "
     endif
 endif
 
 
-let s:fcitx_remote = g:im_switch_command
+if !executable(g:im_switch_command)
+    echomsg "g:im_switch_command 错误"
+    finish
+endif
+
+
 if g:im_switch_command =~ 'im-select'
     let s:ZH = 2052
     let s:EN = 1033
-    let s:toZH = s:fcitx_remote . ' 2052'
-    let s:toEN = s:fcitx_remote . ' 1033'
+    let s:toZH = g:im_switch_command . ' 2052'
+    let s:toEN = g:im_switch_command . ' 1033'
 
 else
     let s:ZH = 2
     let s:EN = 1
-    let s:toZH = s:fcitx_remote . ' -o'
-    let s:toEN = s:fcitx_remote . ' -c'
+    let s:toZH = g:im_switch_command . ' -o'
+    let s:toEN = g:im_switch_command . ' -c'
 endif
 
 
 function! ToEng()
-    let insert_mode = system(s:fcitx_remote)
+    let insert_mode = system(g:im_switch_command)
     if insert_mode == s:ZH
         call system(s:toEN)
     endif
@@ -43,7 +48,7 @@ endfunction
 
 
 function Fcitx2en()
-    let inputstatus = system(s:fcitx_remote)
+    let inputstatus = system(g:im_switch_command)
     if inputstatus == s:ZH
         let b:inputtoggle = 1
         call system(s:toEN)
