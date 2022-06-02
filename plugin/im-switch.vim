@@ -4,36 +4,29 @@ endif
 let g:loaded_im_switch_vim_aa = 1
 
 
-if !exists("g:is_windows")
-    if(has("win32") || has("win64") || has("win95") || has("win16"))
-        let g:is_windows = 1
+if !exists("g:im_switch_command")
+    if executable("fcitx5-remote")
+        let g:im_switch_command = "fcitx5-remote"
+    elseif executable("fcitx-remote")
+        let g:im_switch_command = "fcitx-remote"
+    elseif executable("im-select.exe")
+        let g:im_switch_command = 'im-select.exe'
+    elseif executable(expand('<sfile>:p:h:h') . '/tools/im-select.exe')
+        let g:im_switch_command = expand('<sfile>:p:h:h') . '/tools/im-select.exe'
     else
-        let g:is_windows = 0
+        echoms "需要指定参数 g:im_switch_command "
     endif
 endif
 
 
-if !exists("g:is_git_bash")
-    let g:is_git_bash = 0
-endif
-
-
-if g:is_git_bash == 1
-    let s:fcitx_remote = expand('<sfile>:p:h:h') . '/tools/im-select.exe'
-    let s:ZH = 2052
-    let s:EN = 1033
-    let s:toZH = s:fcitx_remote . ' 2052'
-    let s:toEN = s:fcitx_remote . ' 1033'
-
-elseif g:is_windows == 1
-    let s:fcitx_remote = expand('<sfile>:p:h:h') . '\tools\im-select.exe'
+let s:fcitx_remote = g:im_switch_command
+if g:im_switch_command =~ 'im-select'
     let s:ZH = 2052
     let s:EN = 1033
     let s:toZH = s:fcitx_remote . ' 2052'
     let s:toEN = s:fcitx_remote . ' 1033'
 
 else
-    let s:fcitx_remote = 'fcitx5-remote'
     let s:ZH = 2
     let s:EN = 1
     let s:toZH = s:fcitx_remote . ' -o'
